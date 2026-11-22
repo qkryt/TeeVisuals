@@ -74,10 +74,10 @@ void CDynamicIsland::OnRender()
 
 	// Ping lookup
 	int Ping = 0;
-	if(m_pClient->m_Snap.m_pLocalInfo)
-		Ping = m_pClient->m_Snap.m_pLocalInfo->m_Latency;
-	else if(m_pClient->m_Snap.m_LocalClientId >= 0 && m_pClient->m_Snap.m_paPlayerInfos[m_pClient->m_Snap.m_LocalClientId])
-		Ping = m_pClient->m_Snap.m_paPlayerInfos[m_pClient->m_Snap.m_LocalClientId]->m_Latency;
+	if(GameClient()->m_Snap.m_pLocalInfo)
+		Ping = GameClient()->m_Snap.m_pLocalInfo->m_Latency;
+	else if(GameClient()->m_Snap.m_LocalClientId >= 0 && GameClient()->m_Snap.m_apPlayerInfos[GameClient()->m_Snap.m_LocalClientId])
+		Ping = GameClient()->m_Snap.m_apPlayerInfos[GameClient()->m_Snap.m_LocalClientId]->m_Latency;
 	Ping = std::clamp(Ping, 0, 9999);
 
 	// Clock / Timer

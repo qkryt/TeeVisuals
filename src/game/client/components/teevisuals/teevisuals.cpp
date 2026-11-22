@@ -75,8 +75,8 @@ int CTeeVisuals::GetPlayerListType(int ClientId) const
 	if(ClientId < 0 || ClientId >= MAX_CLIENTS)
 		return 0;
 
-	const char *pName = m_pClient->m_aClients[ClientId].m_aName;
-	const char *pClan = m_pClient->m_aClients[ClientId].m_aClan;
+	const char *pName = GameClient()->m_aClients[ClientId].m_aName;
+	const char *pClan = GameClient()->m_aClients[ClientId].m_aClan;
 
 	return (int)m_PlayerLists.GetPlayerCategory(pName, pClan);
 }
@@ -86,8 +86,8 @@ ColorRGBA CTeeVisuals::GetPlayerListColor(int ClientId, ColorRGBA DefaultColor) 
 	if(ClientId < 0 || ClientId >= MAX_CLIENTS)
 		return DefaultColor;
 
-	const char *pName = m_pClient->m_aClients[ClientId].m_aName;
-	const char *pClan = m_pClient->m_aClients[ClientId].m_aClan;
+	const char *pName = GameClient()->m_aClients[ClientId].m_aName;
+	const char *pClan = GameClient()->m_aClients[ClientId].m_aClan;
 
 	EPlayerListCategory Cat = m_PlayerLists.GetPlayerCategory(pName, pClan);
 	return m_PlayerLists.GetCategoryColor(Cat, DefaultColor);
@@ -98,8 +98,8 @@ const char *CTeeVisuals::GetPlayerListTag(int ClientId) const
 	if(ClientId < 0 || ClientId >= MAX_CLIENTS)
 		return "";
 
-	const char *pName = m_pClient->m_aClients[ClientId].m_aName;
-	const char *pClan = m_pClient->m_aClients[ClientId].m_aClan;
+	const char *pName = GameClient()->m_aClients[ClientId].m_aName;
+	const char *pClan = GameClient()->m_aClients[ClientId].m_aClan;
 
 	EPlayerListCategory Cat = m_PlayerLists.GetPlayerCategory(pName, pClan);
 	return m_PlayerLists.GetCategoryTag(Cat);

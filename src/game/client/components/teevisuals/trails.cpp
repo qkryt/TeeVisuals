@@ -73,8 +73,8 @@ void CPlayerTrails::RenderTrailStrip(int ClientId)
 		else if(Mode == 2)
 		{
 			// Rainbow Sync
-			ColorRGBA R0 = m_pClient->m_TeeVisuals.m_Rainbow.GetRainbowColor(T0);
-			ColorRGBA R1 = m_pClient->m_TeeVisuals.m_Rainbow.GetRainbowColor(T1);
+			ColorRGBA R0 = GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor(T0);
+			ColorRGBA R1 = GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor(T1);
 			Col0 = ColorRGBA(R0.r, R0.g, R0.b, Alpha0 * 0.8f);
 			Col1 = ColorRGBA(R1.r, R1.g, R1.b, Alpha1 * 0.8f);
 		}
@@ -111,13 +111,13 @@ void CPlayerTrails::OnRender()
 	if(Client()->State() != IClient::STATE_ONLINE && Client()->State() != IClient::STATE_DEMOPLAYBACK)
 		return;
 
-	const int LocalId = m_pClient->m_Snap.m_LocalClientId;
+	const int LocalId = GameClient()->m_Snap.m_LocalClientId;
 	const int MaxPoints = std::clamp(g_Config.m_ClTvTrailLength, 5, 100);
 	const int64_t Now = time_get();
 
 	for(int i = 0; i < MAX_CLIENTS; i++)
 	{
-		if(!m_pClient->m_Snap.m_aCharacters[i].m_Active)
+		if(!GameClient()->m_Snap.m_aCharacters[i].m_Active)
 		{
 			m_aaTrailPoints[i].clear();
 			continue;
@@ -129,7 +129,7 @@ void CPlayerTrails::OnRender()
 			continue;
 		}
 
-		const vec2 CurPos = m_pClient->m_aClients[i].m_RenderPos;
+		const vec2 CurPos = GameClient()->m_aClients[i].m_RenderPos;
 		auto &Points = m_aaTrailPoints[i];
 
 		if(Points.empty() || distance(Points.front().m_Pos, CurPos) > 3.0f)

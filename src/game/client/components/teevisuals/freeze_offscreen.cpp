@@ -15,21 +15,25 @@ void CFreezeOffscreenHud::RenderFreezeIndicators()
 	if(!g_Config.m_ClTvFreezeIndicator)
 		return;
 
-	const CCamera *pCam = &m_pClient->m_Camera;
+	const CCamera *pCam = &GameClient()->m_Camera;
 	Graphics()->MapScreenToInterface(pCam->m_Center.x, pCam->m_Center.y);
 
 	for(int i = 0; i < MAX_CLIENTS; i++)
 	{
-		if(!m_pClient->m_Snap.m_aCharacters[i].m_Active)
+		if(!GameClient()->m_Snap.m_aCharacters[i].m_Active)
 			continue;
 
-		const auto &Char = m_pClient->m_Snap.m_aCharacters[i];
-		bool IsFrozen = Char.m_Cur.m_IsInFreeze || (Char.m_Cur.m_FreezeEnd > 0) || m_pClient->m_aClients[i].m_InsideQuadFreeze;
+		const auto &Char = GameClient()->m_Snap.m_aCharacters[i];
+		bool IsFrozen = GameClient()->m_aClients[i].m_InsideQuadFreeze;
+		if(Char.m_HasExtendedData && (Char.m_ExtendedData.m_FreezeEnd > 0 || Char.m_ExtendedData.m_FreezeEnd == -1))
+			IsFrozen = true;
+		if(GameClient()->m_aClients[i].m_RegularPredicted.m_IsInFreeze || GameClient()->m_aClients[i].m_RegularPredicted.m_FreezeEnd > 0)
+			IsFrozen = true;
 
 		if(!IsFrozen)
 			continue;
 
-		const vec2 Pos = m_pClient->m_aClients[i].m_RenderPos;
+		const vec2 Pos = GameClient()->m_aClients[i].m_RenderPos;
 
 		// Draw freeze badge above player
 		const float BadgeW = 44.0f;
@@ -62,22 +66,22 @@ void CFreezeOffscreenHud::RenderOffscreenRadar()
 	Graphics()->MapScreenToSize(ScreenWidth, ScreenHeight);
 
 	const vec2 ScreenCenter(ScreenWidth * 0.5f, ScreenHeight * 0.5f);
-	const vec2 CamCenter = m_pClient->m_Camera.m_Center;
-	const float Zoom = std::max(0.05f, m_pClient->m_Camera.m_Zoom);
+	const vec2 CamCenter = GameClient()->m_Camera.m_Center;
+	const float Zoom = std::max(0.05f, GameClient()->m_Camera.m_Zoom);
 
 	const float HalfWorldH = 150.0f * Zoom;
 	const float HalfWorldW = HalfWorldH * Graphics()->ScreenAspect();
 
 	const float Margin = 20.0f;
 	const float MaxRange = (float)g_Config.m_ClTvOffscreenRange;
-	const int LocalId = m_pClient->m_Snap.m_LocalClientId;
+	const int LocalId = GameClient()->m_Snap.m_LocalClientId;
 
 	for(int i = 0; i < MAX_CLIENTS; i++)
 	{
-		if(i == LocalId || !m_pClient->m_Snap.m_aCharacters[i].m_Active)
+		if(i == LocalId || !GameClient()->m_Snap.m_aCharacters[i].m_Active)
 			continue;
 
-		const vec2 TargetPos = m_pClient->m_aClients[i].m_RenderPos;
+		const vec2 TargetPos = GameClient()->m_aClients[i].m_RenderPos;
 		const vec2 Rel = TargetPos - CamCenter;
 		const float Dist = length(Rel);
 
@@ -89,8 +93,8 @@ void CFreezeOffscreenHud::RenderOffscreenRadar()
 			continue; // on screen, no off-screen marker needed
 
 		// Social category check
-		int ListType = m_pClient->m_TeeVisuals.GetPlayerListType(i);
-		bool IsTeammate = !m_pClient->IsOtherTeam(i);
+		int ListType = GameClient()->m_TeeVisuals.GetPlayerListType(i);
+		bool IsTeammate = !GameClient()->IsOtherTeam(i);
 
 		if(!g_Config.m_ClTvOffscreenTeammates && !g_Config.m_ClTvOffscreenWar)
 			continue;
@@ -135,7 +139,7 @@ void CFreezeOffscreenHud::RenderOffscreenRadar()
 		// Distance in tiles (32 units = 1 tile / meter)
 		int DistMeters = (int)(Dist / 32.0f);
 		char aDistBuf[32];
-		str_format(aDistBuf, sizeof(aDistBuf), "%s%s (%dm)", pPrefix, m_pClient->m_aClients[i].m_aName, DistMeters);
+		str_format(aDistBuf, sizeof(aDistBuf), "%s%s (%dm)", pPrefix, GameClient()->m_aClients[i].m_aName, DistMeters);
 
 		const float FontSize = 5.0f;
 		const float TextW = TextRender()->TextWidth(FontSize, aDistBuf, -1, -1.0f);
