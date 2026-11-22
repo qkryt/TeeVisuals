@@ -55,14 +55,19 @@ jobs:
             libavcodec-dev \
             libavformat-dev \
             libavutil-dev \
+            libcurl4-openssl-dev \
             libfreetype6-dev \
             libglew-dev \
             libnotify-dev \
+            libogg-dev \
+            libopus-dev \
+            libopusfile-dev \
             libpng-dev \
             libsdl2-dev \
             libsqlite3-dev \
             libswresample-dev \
             libswscale-dev \
+            libwavpack-dev \
             libx264-dev \
             libvulkan-dev \
             ninja-build \
@@ -75,8 +80,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew update
-          brew install ffmpeg molten-vk ninja pkg-config sdl2
-          brew upgrade freetype
+          brew install ffmpeg molten-vk ninja pkg-config sdl2 libogg opus opusfile freetype
           pip3 install --break-system-packages dmgbuild pyobjc-framework-Quartz
 
       - name: Configure CMake (Windows)
@@ -179,7 +183,7 @@ jobs:
           rustup target add i686-linux-android
           rustup target add aarch64-linux-android
           rustup target add x86_64-linux-android
-          chmod +x -R scripts
+          chmod -R +x scripts
           bash scripts/android/download_android_sdk.sh /home/runner
 
       - name: Install Vulkan SDK
@@ -198,7 +202,7 @@ jobs:
           export ANDROID_HOME="/home/runner/Android/Sdk"
           unset ANDROID_SDK_ROOT
           export PATH=/home/runner/cmake/bin:$PATH
-          chmod +x -R scripts
+          chmod -R +x scripts
           bash scripts/android/cmake_android.sh all TeeVisuals org.teevisuals.client Release build-android
           mkdir -p artifacts
           find build-android -name "*.apk" -exec cp {} artifacts/TeeVisuals-android.apk \;
@@ -226,7 +230,7 @@ jobs:
           rustup default stable
           rustup target add aarch64-apple-ios
           rustup target add aarch64-apple-ios-sim
-          chmod +x -R scripts
+          chmod -R +x scripts
 
       - name: Build iOS App
         run: |

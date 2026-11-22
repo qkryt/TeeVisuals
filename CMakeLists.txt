@@ -2144,6 +2144,7 @@ set(EXPECTED_DATA
   themes/winter_day.map
   themes/winter_night.map
   touch_controls.json
+  ui/teevisuals_logo.png
   wordlist.txt
   # tidy-alphabetical-end
 )
@@ -2429,6 +2430,7 @@ set_src(ENGINE_SHARED GLOB_RECURSE src/engine/shared
   config_includes.h
   config_variables.h
   config_variables_entity.h
+  config_variables_teevisuals.h
   console.cpp
   console.h
   csv.cpp

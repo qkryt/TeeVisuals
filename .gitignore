@@ -30,7 +30,8 @@ Release
 SAN.*
 _CPack_Packages/
 build.ninja
-checksummed_*
+/checksummed_*
+!cmake/checksummed_extra.txt
 cmake_install.cmake
 debug
 gmock.pc
@@ -72,12 +73,12 @@ Payload/
 
 # Ignore all the generated executables without extensions (for non-Windows
 # systems).
-DDNet
-TeeVisuals
-TeeVisuals.exe
+/DDNet
+/TeeVisuals
+/TeeVisuals.exe
 !DDNet/
-DDNet-Server
-DDNet-Server-Launcher
+/DDNet-Server
+/DDNet-Server-Launcher
 libsteam_api.a
 config_retrieve
 config_store
