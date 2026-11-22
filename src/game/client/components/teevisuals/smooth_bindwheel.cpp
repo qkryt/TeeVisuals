@@ -146,7 +146,7 @@ void CSmoothBindwheel::OnRender()
 
 	const float ScreenWidth = 300.0f * Graphics()->ScreenAspect();
 	const float ScreenHeight = 300.0f;
-	Graphics()->MapScreen(0.0f, 0.0f, ScreenWidth, ScreenHeight);
+	Graphics()->MapScreenToSize(ScreenWidth, ScreenHeight);
 
 	const vec2 Center(ScreenWidth * 0.5f, ScreenHeight * 0.5f);
 	const int NumSlots = (int)m_vSlots.size();

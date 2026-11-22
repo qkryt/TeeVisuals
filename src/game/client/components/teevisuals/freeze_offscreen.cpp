@@ -59,7 +59,7 @@ void CFreezeOffscreenHud::RenderOffscreenRadar()
 
 	const float ScreenWidth = 300.0f * Graphics()->ScreenAspect();
 	const float ScreenHeight = 300.0f;
-	Graphics()->MapScreen(0.0f, 0.0f, ScreenWidth, ScreenHeight);
+	Graphics()->MapScreenToSize(ScreenWidth, ScreenHeight);
 
 	const vec2 ScreenCenter(ScreenWidth * 0.5f, ScreenHeight * 0.5f);
 	const vec2 CamCenter = m_pClient->m_Camera.m_Center;

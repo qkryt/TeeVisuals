@@ -104,7 +104,7 @@ void CDynamicIsland::OnRender()
 	// Virtual coordinate space (300 height)
 	const float ScreenWidth = 300.0f * Graphics()->ScreenAspect();
 	const float ScreenHeight = 300.0f;
-	Graphics()->MapScreen(0.0f, 0.0f, ScreenWidth, ScreenHeight);
+	Graphics()->MapScreenToSize(ScreenWidth, ScreenHeight);
 
 	const float Scale = (float)g_Config.m_ClTvIslandScale / 100.0f;
 	const float Height = 17.0f * Scale;
