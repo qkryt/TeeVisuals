@@ -407,7 +407,7 @@ private:
 	int m_PrevLocalId = -1; // TClient
 
 public:
-	IKernel *Kernel() { return IInterface::Kernel(); }
+	IKernel *Kernel() { return IGameClient::Kernel(); }
 	IEngine *Engine() const { return m_pEngine; }
 	class IGraphics *Graphics() const { return m_pGraphics; }
 	class IClient *Client() const { return m_pClient; }

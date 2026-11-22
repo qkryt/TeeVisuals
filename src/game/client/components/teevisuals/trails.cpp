@@ -62,13 +62,17 @@ void CPlayerTrails::RenderTrailStrip(int ClientId)
 		if(Mode == 1)
 		{
 			// Orange-Yellow Gradient: #FF8C00 -> #FFB800 -> #FFE066
-			ColorRGBA Orange(1.0f, 0.55f, 0.0f, Alpha0 * 0.8f);
-			ColorRGBA Yellow(1.0f, 0.88f, 0.40f, Alpha0 * 0.8f);
-			Col0 = mix(Orange, Yellow, T0);
+			Col0 = ColorRGBA(
+				1.0f,
+				0.55f + (0.88f - 0.55f) * T0,
+				0.0f + (0.40f - 0.0f) * T0,
+				Alpha0 * 0.8f);
 
-			ColorRGBA Orange1(1.0f, 0.55f, 0.0f, Alpha1 * 0.8f);
-			ColorRGBA Yellow1(1.0f, 0.88f, 0.40f, Alpha1 * 0.8f);
-			Col1 = mix(Orange1, Yellow1, T1);
+			Col1 = ColorRGBA(
+				1.0f,
+				0.55f + (0.88f - 0.55f) * T1,
+				0.0f + (0.40f - 0.0f) * T1,
+				Alpha1 * 0.8f);
 		}
 		else if(Mode == 2)
 		{

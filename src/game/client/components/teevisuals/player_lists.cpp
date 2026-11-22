@@ -284,7 +284,7 @@ void CPlayerLists::PrintList(EPlayerListCategory Category)
 
 	if(Count == 0)
 	{
-		str_format(aBuf, sizeof(aBuf), "  (Empty)");
+		str_copy(aBuf, "  (Empty)");
 		GameClient()->ClientMessage(aBuf);
 	}
 }

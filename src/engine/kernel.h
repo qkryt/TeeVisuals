@@ -12,10 +12,10 @@ class IInterface
 	friend class CKernel;
 	IKernel *m_pKernel;
 
-protected:
+public:
+	IKernel *Kernel() const { return m_pKernel; }
 	IKernel *Kernel() { return m_pKernel; }
 
-public:
 	IInterface() :
 		m_pKernel(nullptr) {}
 	virtual void Shutdown() {}

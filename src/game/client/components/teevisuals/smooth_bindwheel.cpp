@@ -2,6 +2,7 @@
 
 #include <base/color.h>
 #include <engine/client.h>
+#include <engine/console.h>
 #include <engine/graphics.h>
 #include <engine/shared/config.h>
 #include <engine/textrender.h>
@@ -83,7 +84,7 @@ void CSmoothBindwheel::ExecuteSelected()
 		const char *pCmd = m_vSlots[m_HoveredIndex].m_aCommand;
 		if(pCmd && pCmd[0])
 		{
-			Console()->ExecuteLine(pCmd);
+			Console()->ExecuteLine(pCmd, IConsole::CLIENT_ID_UNSPECIFIED);
 		}
 	}
 }
@@ -110,10 +111,10 @@ bool CSmoothBindwheel::OnInput(const IInput::CEvent &Event)
 	if(!m_Active)
 		return false;
 
-	// Mouse button release or touch release executes
+	// Mouse button release executes
 	if(Event.m_Flags & IInput::FLAG_RELEASE)
 	{
-		if(Event.m_Key == KEY_MOUSE_1 || Event.m_Key >= KEY_CUSTOM_FIRST)
+		if(Event.m_Key == KEY_MOUSE_1)
 		{
 			SetActive(false);
 			return true;

@@ -2,6 +2,7 @@
 #define GAME_CLIENT_COMPONENTS_TEEVISUALS_TRAILS_H
 
 #include <base/vmath.h>
+#include <engine/shared/protocol.h>
 #include <game/client/component.h>
 
 #include <deque>
