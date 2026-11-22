@@ -40,11 +40,18 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install Vulkan SDK
+        uses: humbletim/install-vulkan-sdk@v1.2
+        with:
+          version: 1.3.296.0
+          cache: true
+
       - name: Prepare Linux dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update -y
           sudo apt-get install -y \
+            gcovr \
             libavcodec-dev \
             libavformat-dev \
             libavutil-dev \
@@ -59,12 +66,18 @@ jobs:
             libx264-dev \
             libvulkan-dev \
             ninja-build \
-            pkg-config
+            pkg-config \
+            valgrind \
+            glslang-tools \
+            spirv-tools
 
       - name: Prepare macOS dependencies
         if: runner.os == 'macOS'
         run: |
-          brew install ninja dmgbuild || true
+          brew update
+          brew install ffmpeg molten-vk ninja pkg-config sdl2
+          brew upgrade freetype
+          pip3 install --break-system-packages dmgbuild pyobjc-framework-Quartz
 
       - name: Configure CMake (Windows)
         if: runner.os == 'Windows'
@@ -81,56 +94,60 @@ jobs:
         run: |
           cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DVULKAN=ON -DDISCORD=OFF -DCLIENT_EXECUTABLE=TeeVisuals -DPREFER_BUNDLED_LIBS=ON
 
-      - name: Build (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          cmake --build build --config Release --target TeeVisuals
-
-      - name: Build (Linux & macOS)
-        if: runner.os != 'Windows'
-        run: |
-          cmake --build build --config Release --target TeeVisuals
-
-      - name: Package Windows
+      - name: Build & Package (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Path package/TeeVisuals -Force
-          Copy-Item build/Release/TeeVisuals.exe package/TeeVisuals/ -ErrorAction SilentlyContinue
-          Copy-Item build/TeeVisuals.exe package/TeeVisuals/ -ErrorAction SilentlyContinue
-          Copy-Item -Recurse data package/TeeVisuals/data
-          Copy-Item build/Release/*.dll package/TeeVisuals/ -ErrorAction SilentlyContinue
-          Copy-Item build/*.dll package/TeeVisuals/ -ErrorAction SilentlyContinue
-          Copy-Item ddnet-libs/windows/lib64/*.dll package/TeeVisuals/ -ErrorAction SilentlyContinue
-          Compress-Archive -Path package/TeeVisuals -DestinationPath TeeVisuals-windows-x64.zip
+          cmake --build build --config Release --target package_default
+          New-Item -ItemType Directory -Path artifacts -Force
+          $zip = Get-ChildItem -Path build -Filter "*.zip" | Select-Object -First 1
+          if ($zip) {
+            Copy-Item $zip.FullName artifacts/TeeVisuals-windows-x64.zip
+          } else {
+            New-Item -ItemType Directory -Path pack_win/TeeVisuals -Force
+            Copy-Item build/Release/TeeVisuals.exe pack_win/TeeVisuals/ -ErrorAction SilentlyContinue
+            Copy-Item build/TeeVisuals.exe pack_win/TeeVisuals/ -ErrorAction SilentlyContinue
+            Copy-Item -Recurse data pack_win/TeeVisuals/data
+            Copy-Item build/Release/*.dll pack_win/TeeVisuals/ -ErrorAction SilentlyContinue
+            Copy-Item build/*.dll pack_win/TeeVisuals/ -ErrorAction SilentlyContinue
+            Copy-Item ddnet-libs/windows/lib64/*.dll pack_win/TeeVisuals/ -ErrorAction SilentlyContinue
+            Compress-Archive -Path pack_win/TeeVisuals -DestinationPath artifacts/TeeVisuals-windows-x64.zip
+          }
 
-      - name: Package Linux
+      - name: Build & Package (Linux)
         if: runner.os == 'Linux'
         run: |
-          mkdir -p package/TeeVisuals
-          cp build/TeeVisuals package/TeeVisuals/
-          cp -r data package/TeeVisuals/
-          tar -cJf TeeVisuals-linux-x64.tar.xz -C package TeeVisuals
+          cmake --build build --config Release --target package_default
+          mkdir -p artifacts
+          tar_file=$(find build -name "*.tar.xz" | head -n 1)
+          if [ -n "$tar_file" ]; then
+            cp "$tar_file" artifacts/TeeVisuals-linux-x64.tar.xz
+          else
+            mkdir -p pack_linux/TeeVisuals
+            cp build/TeeVisuals pack_linux/TeeVisuals/
+            cp -r data pack_linux/TeeVisuals/
+            tar -cJf artifacts/TeeVisuals-linux-x64.tar.xz -C pack_linux TeeVisuals
+          fi
 
-      - name: Package macOS
+      - name: Build & Package (macOS)
         if: runner.os == 'macOS'
         run: |
-          mkdir -p package
-          if [ -d "build/TeeVisuals.app" ]; then
-            cp -R build/TeeVisuals.app package/
-            hdiutil create -volname "TeeVisuals" -srcfolder package -ov -format UDZO TeeVisuals-macos.dmg
+          cmake --build build --config Release --target package_default
+          mkdir -p artifacts
+          dmg_file=$(find build -name "*.dmg" | head -n 1)
+          if [ -n "$dmg_file" ]; then
+            cp "$dmg_file" artifacts/TeeVisuals-macos.dmg
           else
-            cd build
-            cmake --build . --config Release --target package_default || true
-            cd ..
-            find build -name "*.dmg" -exec mv {} TeeVisuals-macos.dmg \; || zip -r TeeVisuals-macos.dmg build/TeeVisuals*
+            mkdir -p pack_mac
+            cp -R build/TeeVisuals.app pack_mac/
+            hdiutil create -volname "TeeVisuals" -srcfolder pack_mac -ov -format UDZO artifacts/TeeVisuals-macos.dmg
           fi
 
       - name: Upload Desktop Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
-          path: ${{ matrix.package-file }}
+          path: artifacts/*
           if-no-files-found: warn
 
   build-android:
@@ -149,18 +166,21 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Set up Rust for Android
+      - name: Prepare Linux & Rust for Android
         run: |
-          rustup default 1.85.0 || rustup default stable
-          cargo install cargo-ndk || true
-          rustup target add aarch64-linux-android
+          sudo apt-get update -y
+          sudo apt-get install -y ninja-build openjdk-21-jdk openssl wget unzip
+          curl -LO https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
+          mkdir -p /home/runner/cmake
+          tar --strip-components 1 -C /home/runner/cmake -xf cmake-3.22.1-Linux-x86_64.tar.gz
+          rustup default stable
+          cargo install cargo-ndk --version 3.5.4 || cargo install cargo-ndk
           rustup target add armv7-linux-androideabi
-          rustup target add x86_64-linux-android
           rustup target add i686-linux-android
-
-      - name: Download Android SDK & NDK
-        run: |
-          scripts/android/download_android_sdk.sh /home/runner
+          rustup target add aarch64-linux-android
+          rustup target add x86_64-linux-android
+          chmod +x -R scripts
+          bash scripts/android/download_android_sdk.sh /home/runner
 
       - name: Install Vulkan SDK
         uses: humbletim/install-vulkan-sdk@v1.2
@@ -178,9 +198,10 @@ jobs:
           export ANDROID_HOME="/home/runner/Android/Sdk"
           unset ANDROID_SDK_ROOT
           export PATH=/home/runner/cmake/bin:$PATH
-          scripts/android/cmake_android.sh all TeeVisuals org.teevisuals.client Release build-android
+          chmod +x -R scripts
+          bash scripts/android/cmake_android.sh all TeeVisuals org.teevisuals.client Release build-android
           mkdir -p artifacts
-          cp build-android/*.apk artifacts/TeeVisuals-android.apk || cp build-android/build/outputs/apk/release/*.apk artifacts/TeeVisuals-android.apk || cp build-android/build/outputs/apk/debug/*.apk artifacts/TeeVisuals-android.apk
+          find build-android -name "*.apk" -exec cp {} artifacts/TeeVisuals-android.apk \;
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
@@ -205,10 +226,11 @@ jobs:
           rustup default stable
           rustup target add aarch64-apple-ios
           rustup target add aarch64-apple-ios-sim
+          chmod +x -R scripts
 
       - name: Build iOS App
         run: |
-          scripts/ios/cmake_ios.sh device TeeVisuals org.teevisuals.client Release build-ios-device
+          bash scripts/ios/cmake_ios.sh device TeeVisuals org.teevisuals.client Release build-ios-device
 
       - name: Package iOS IPA (Unsigned / TrollStore / Sideloading)
         run: |
