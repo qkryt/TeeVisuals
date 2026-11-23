@@ -75,7 +75,7 @@ void CMenusTeeVisuals::RenderSettings(CMenus *pMenus, CUIRect MainView)
 
 void CMenusTeeVisuals::RenderSubTabHudIsland(CMenus *pMenus, CUIRect View)
 {
-	CUIRect Left, Right, Section, Item, Label;
+	CUIRect Left, Right, Item, Label;
 	View.VSplitMid(&Left, &Right, 16.0f);
 
 	// ==================== LEFT: Dynamic Island HUD ====================
@@ -316,7 +316,8 @@ void CMenusTeeVisuals::RenderSubTabSocialLists(CMenus *pMenus, CUIRect View)
 	// Category selector
 	Left.HSplitTop(20.0f, &Item, &Left);
 	CUIRect BtnWar, BtnTeam, BtnHelp;
-	Item.VSplit3(&BtnWar, &BtnTeam, &BtnHelp);
+	Item.VSplitLeft(Item.w / 3.0f, &BtnWar, &Item);
+	Item.VSplitMid(&BtnTeam, &BtnHelp);
 
 	static CButtonContainer s_BtnCatWar, s_BtnCatTeam, s_BtnCatHelp;
 	if(pMenus->DoButton_Menu(&s_BtnCatWar, "War", s_SelectedCategory == CATEGORY_WAR, &BtnWar))
