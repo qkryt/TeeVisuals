@@ -302,7 +302,7 @@ bool CMenuBackground::Render()
 	float ScreenHeight = 300.0f;
 	Graphics()->MapScreenToSize(ScreenWidth, ScreenHeight);
 
-	if(GameClient()->m_TeeVisuals.m_UiCustomizer.RenderMenuBackground(ScreenWidth, ScreenHeight))
+	if(GameClient()->m_TeeVisuals.m_UiCustom.RenderMenuBackground(ScreenWidth, ScreenHeight))
 		return true;
 
 	if(!m_Loaded)
