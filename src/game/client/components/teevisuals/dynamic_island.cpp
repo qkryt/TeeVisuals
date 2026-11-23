@@ -140,7 +140,7 @@ void CDynamicIsland::OnRender()
 	}
 	else // System Time
 	{
-		time_t RawTime = time(nullptr);
+		time_t RawTime = ::time(nullptr);
 		struct tm TmBuf;
 #if defined(CONF_FAMILY_WINDOWS)
 		localtime_s(&TmBuf, &RawTime);
@@ -184,7 +184,11 @@ void CDynamicIsland::OnRender()
 	m_Alpha += (1.0f - m_Alpha) * std::min(1.0f, DeltaTime * 8.0f);
 
 	// Safe Area offset calculation (down below notch/cutout)
-	bool HasTouch = (Input()->NumTouchDevices() > 0) || g_Config.m_ClTvMobileSafeArea;
+#if defined(CONF_PLATFORM_ANDROID) || defined(CONF_PLATFORM_IOS)
+	bool HasTouch = true;
+#else
+	bool HasTouch = (!Input()->TouchFingerStates().empty()) || g_Config.m_ClTvMobileSafeArea;
+#endif
 	TeeVisuals::SSafeArea SafeArea = TeeVisuals::GetSafeArea(HasTouch);
 
 	float CenterX = ScreenWidth * 0.5f + (float)g_Config.m_ClTvIslandX;

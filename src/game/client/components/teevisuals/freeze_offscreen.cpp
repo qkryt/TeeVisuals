@@ -277,7 +277,7 @@ void CFreezeOffscreenHud::RenderOffscreenRadar()
 			Graphics()->TrianglesBegin();
 			Graphics()->SetColor(MarkerCol.r, MarkerCol.g, MarkerCol.b, MarkerCol.a);
 			IGraphics::CFreeformItem Tri(ArrowTip.x, ArrowTip.y, ArrowBaseL.x, ArrowBaseL.y, ArrowBaseR.x, ArrowBaseR.y, ArrowBaseR.x, ArrowBaseR.y);
-			Graphics()->TrianglesDraw(&Tri, 1);
+			Graphics()->QuadsDrawFreeform(&Tri, 1);
 			Graphics()->TrianglesEnd();
 		}
 		else
@@ -313,7 +313,7 @@ void CFreezeOffscreenHud::RenderOffscreenRadar()
 			Graphics()->TrianglesBegin();
 			Graphics()->SetColor(MarkerCol.r, MarkerCol.g, MarkerCol.b, MarkerCol.a);
 			IGraphics::CFreeformItem Tri(ArrowTip.x, ArrowTip.y, ArrowBaseL.x, ArrowBaseL.y, ArrowBaseR.x, ArrowBaseR.y, ArrowBaseR.x, ArrowBaseR.y);
-			Graphics()->TrianglesDraw(&Tri, 1);
+			Graphics()->QuadsDrawFreeform(&Tri, 1);
 			Graphics()->TrianglesEnd();
 		}
 	}

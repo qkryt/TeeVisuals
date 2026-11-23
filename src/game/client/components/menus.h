@@ -936,6 +936,7 @@ private:
 	friend class CMenusModeration;
 	CMenusSettingsControls m_MenusSettingsControls;
 	friend CMenusSettingsControls;
+	friend class CMenusTeeVisuals;
 	CMenusStart m_MenusStart;
 
 	static int GhostlistFetchCallback(const CFsFileInfo *pInfo, int IsDir, int StorageType, void *pUser);

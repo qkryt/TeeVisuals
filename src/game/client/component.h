@@ -10,12 +10,15 @@
 #include <engine/input.h>
 
 class CGameClient;
+class CMenusTeeVisuals;
 
 class CComponentInterfaces
 {
 public:
 	virtual void OnInterfacesInit(CGameClient *pClient);
 	virtual ~CComponentInterfaces() = default;
+
+	friend class CMenusTeeVisuals;
 
 protected:
 	/**

@@ -504,12 +504,12 @@ void CMenusTeeVisuals::RenderSubTabPortedFeatures(CMenus *pMenus, CUIRect View)
 		g_Config.m_ClClientUsersScoreboard ^= 1;
 
 	Left.HSplitTop(20.0f, &Item, &Left);
-	if(pMenus->DoButton_CheckBox(&g_Config.m_ClSpecPauseRadio, "Spectator Pause Radio Menu", g_Config.m_ClSpecPauseRadio, &Item))
-		g_Config.m_ClSpecPauseRadio ^= 1;
+	if(pMenus->DoButton_CheckBox(&g_Config.m_ClSpecCursorInterpolation, "Interpolate Spectator Aim/Cursor", g_Config.m_ClSpecCursorInterpolation, &Item))
+		g_Config.m_ClSpecCursorInterpolation ^= 1;
 
 	Left.HSplitTop(20.0f, &Item, &Left);
-	if(pMenus->DoButton_CheckBox(&g_Config.m_ClLocalPractice, "Local Solo Practice World", g_Config.m_ClLocalPractice, &Item))
-		g_Config.m_ClLocalPractice ^= 1;
+	if(pMenus->DoButton_CheckBox(&g_Config.m_ClLocalPracticeGhost, "Local Solo Practice World Ghost", g_Config.m_ClLocalPracticeGhost, &Item))
+		g_Config.m_ClLocalPracticeGhost ^= 1;
 
 	// ==================== RIGHT: Visual & Server Enhancements ====================
 	Right.HSplitTop(24.0f, &Label, &Right);
@@ -518,12 +518,16 @@ void CMenusTeeVisuals::RenderSubTabPortedFeatures(CMenus *pMenus, CUIRect View)
 	pMenus->TextRender()->TextColor(pMenus->TextRender()->DefaultTextColor());
 
 	Right.HSplitTop(20.0f, &Item, &Right);
-	if(pMenus->DoButton_CheckBox(&g_Config.m_ClPhysicBalls, "Physical Ball Simulations (Media)", g_Config.m_ClPhysicBalls, &Item))
-		g_Config.m_ClPhysicBalls ^= 1;
+	if(pMenus->DoButton_CheckBox(&g_Config.m_ClPhysicBallsKillBorder, "Physical Balls Border Collision", g_Config.m_ClPhysicBallsKillBorder, &Item))
+		g_Config.m_ClPhysicBallsKillBorder ^= 1;
 
 	Right.HSplitTop(20.0f, &Item, &Right);
-	if(pMenus->DoButton_CheckBox(&g_Config.m_ClMovingTiles, "Animated Moving Tiles Background", g_Config.m_ClMovingTiles, &Item))
-		g_Config.m_ClMovingTiles ^= 1;
+	if(pMenus->DoButton_CheckBox(&g_Config.m_ClShowMovingTilesEntities, "Animated Moving Tiles Background", g_Config.m_ClShowMovingTilesEntities, &Item))
+		g_Config.m_ClShowMovingTilesEntities ^= 1;
+
+	Right.HSplitTop(20.0f, &Item, &Right);
+	if(pMenus->DoButton_CheckBox(&g_Config.m_ClPredictMovingTiles, "Predict Server Moving Tiles", g_Config.m_ClPredictMovingTiles, &Item))
+		g_Config.m_ClPredictMovingTiles ^= 1;
 
 	Right.HSplitTop(20.0f, &Item, &Right);
 	if(pMenus->DoButton_CheckBox(&g_Config.m_ClChatBubbles, "Player Chat Bubbles Above Tees", g_Config.m_ClChatBubbles, &Item))
