@@ -594,6 +594,12 @@ bool CChat::OnInput(const IInput::CEvent &Event)
 		if(GameClient()->m_Bindchat.ChatDoBinds(pInput))
 			SendMessage = false;
 
+		if(SendMessage && (pInput[0] == '.' || pInput[0] == '!') && GameClient()->m_TeeVisuals.OnChatCommand(pInput))
+		{
+			AddHistoryEntry(pInput);
+			SendMessage = false;
+		}
+
 		// EClient: a practice command is run against the local practice world and swallowed, so the
 		// server never sees a slash command it would answer for a team we are not in. It was typed
 		// into the chat box like any other line, so it belongs in the history like any other line.

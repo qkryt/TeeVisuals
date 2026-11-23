@@ -17,8 +17,9 @@ void CTeeVisuals::OnInterfacesInit(CGameClient *pClient)
 	m_Trails.OnInterfacesInit(pClient);
 	m_FreezeOffscreen.OnInterfacesInit(pClient);
 	m_PlayerLists.OnInterfacesInit(pClient);
-	m_SmoothBindwheel.OnInterfacesInit(pClient);
-	m_UiCustomizer.OnInterfacesInit(pClient);
+	m_Bindwheel.OnInterfacesInit(pClient);
+	m_UiCustom.OnInterfacesInit(pClient);
+	m_MobileUx.OnInterfacesInit(pClient);
 }
 
 void CTeeVisuals::OnInit()
@@ -28,8 +29,9 @@ void CTeeVisuals::OnInit()
 	m_Trails.OnInit();
 	m_FreezeOffscreen.OnInit();
 	m_PlayerLists.OnInit();
-	m_SmoothBindwheel.OnInit();
-	m_UiCustomizer.OnInit();
+	m_Bindwheel.OnInit();
+	m_UiCustom.OnInit();
+	m_MobileUx.OnInit();
 }
 
 void CTeeVisuals::OnReset()
@@ -39,8 +41,9 @@ void CTeeVisuals::OnReset()
 	m_Trails.OnReset();
 	m_FreezeOffscreen.OnReset();
 	m_PlayerLists.OnReset();
-	m_SmoothBindwheel.OnReset();
-	m_UiCustomizer.OnReset();
+	m_Bindwheel.OnReset();
+	m_UiCustom.OnReset();
+	m_MobileUx.OnReset();
 }
 
 void CTeeVisuals::OnConsoleInit()
@@ -50,19 +53,20 @@ void CTeeVisuals::OnConsoleInit()
 	m_Trails.OnConsoleInit();
 	m_FreezeOffscreen.OnConsoleInit();
 	m_PlayerLists.OnConsoleInit();
-	m_SmoothBindwheel.OnConsoleInit();
-	m_UiCustomizer.OnConsoleInit();
+	m_Bindwheel.OnConsoleInit();
+	m_UiCustom.OnConsoleInit();
+	m_MobileUx.OnConsoleInit();
 }
 
 void CTeeVisuals::OnRender()
 {
-	// Sub-components are also registered in m_vpAll or driven directly
-	m_UiCustomizer.OnRender();
+	m_UiCustom.OnRender();
 	m_Rainbow.OnRender();
 	m_Trails.OnRender();
 	m_FreezeOffscreen.OnRender();
 	m_DynamicIsland.OnRender();
-	m_SmoothBindwheel.OnRender();
+	m_MobileUx.OnRender();
+	m_Bindwheel.OnRender();
 }
 
 bool CTeeVisuals::OnChatCommand(const char *pLine)

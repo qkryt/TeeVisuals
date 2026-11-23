@@ -1638,7 +1638,6 @@ set(EXPECTED_DATA
   countryflags/X-CAMMO.png
   countryflags/X-CAMMOSTRIPES.png
   countryflags/X-COALA.png
-  countryflags/X-ENTITY.png
   countryflags/X-FINISH.png
   countryflags/X-GAY.png
   countryflags/X-LESBIAN.png
@@ -1726,10 +1725,19 @@ set(EXPECTED_DATA
   entity/icons/muted_icon.png
   entity/icons/settings_icon.png
   extras.png
+  fonts/Cabin-Regular.ttf
+  fonts/ComicSansMS.ttf
   fonts/DejaVuSans.ttf
   fonts/Font_Awesome_6_Free-Solid-900.otf
   fonts/GlowSansJ-Compressed-Book.otf
+  fonts/GoogleSans-Regular.ttf
+  fonts/Inter_24pt-Regular.ttf
+  fonts/Inter_24pt-SemiBold.ttf
+  fonts/Minecraft_font.ttf
+  fonts/Montserrat-Regular.ttf
   fonts/NotoEmoji-Regular.ttf
+  fonts/Nunito-Black.ttf
+  fonts/Rubik-Regular.ttf
   fonts/SourceHanSans.ttc
   fonts/index.json
   game.png
@@ -2144,6 +2152,7 @@ set(EXPECTED_DATA
   themes/winter_day.map
   themes/winter_night.map
   touch_controls.json
+  ui/teevisuals_island_logo.png
   ui/teevisuals_logo.png
   wordlist.txt
   # tidy-alphabetical-end
@@ -2940,23 +2949,27 @@ if(CLIENT)
     components/tclient/trails.h
     components/tclient/translate.cpp
     components/tclient/translate.h
+    components/teevisuals/bindwheel.cpp
+    components/teevisuals/bindwheel.h
     components/teevisuals/dynamic_island.cpp
     components/teevisuals/dynamic_island.h
     components/teevisuals/freeze_offscreen.cpp
     components/teevisuals/freeze_offscreen.h
-    components/teevisuals/menus_settings_teevisuals.cpp
+    components/teevisuals/menus_teevisuals.cpp
+    components/teevisuals/menus_teevisuals.h
+    components/teevisuals/mobile_ux.cpp
+    components/teevisuals/mobile_ux.h
     components/teevisuals/player_lists.cpp
     components/teevisuals/player_lists.h
     components/teevisuals/rainbow.cpp
     components/teevisuals/rainbow.h
-    components/teevisuals/smooth_bindwheel.cpp
-    components/teevisuals/smooth_bindwheel.h
     components/teevisuals/teevisuals.cpp
     components/teevisuals/teevisuals.h
+    components/teevisuals/teevisuals_common.h
     components/teevisuals/trails.cpp
     components/teevisuals/trails.h
-    components/teevisuals/ui_customizer.cpp
-    components/teevisuals/ui_customizer.h
+    components/teevisuals/ui_custom.cpp
+    components/teevisuals/ui_custom.h
     components/touch_controls.cpp
     components/touch_controls.h
     components/voting.cpp

@@ -3,6 +3,7 @@
 #include <engine/client.h>
 #include <engine/shared/config.h>
 
+#include <algorithm>
 #include <cmath>
 
 CRainbowEffect::CRainbowEffect()
@@ -44,22 +45,27 @@ ColorRGBA CRainbowEffect::GetRainbowColor(float Offset) const
 	return color_cast<ColorRGBA>(GetRainbowColorHSV(Offset));
 }
 
+bool CRainbowEffect::IsRainbowActive() const
+{
+	return g_Config.m_ClTvRainbow != 0;
+}
+
 bool CRainbowEffect::IsBodyRainbow() const
 {
-	return g_Config.m_ClTvRainbowBody != 0;
+	return g_Config.m_ClTvRainbow != 0 && g_Config.m_ClTvRainbowBody != 0;
 }
 
 bool CRainbowEffect::IsFeetRainbow() const
 {
-	return g_Config.m_ClTvRainbowFeet != 0;
+	return g_Config.m_ClTvRainbow != 0 && g_Config.m_ClTvRainbowFeet != 0;
 }
 
 bool CRainbowEffect::IsWeaponRainbow() const
 {
-	return g_Config.m_ClTvRainbowWeapon != 0;
+	return g_Config.m_ClTvRainbow != 0 && g_Config.m_ClTvRainbowWeapon != 0;
 }
 
 bool CRainbowEffect::IsHookRainbow() const
 {
-	return g_Config.m_ClTvRainbowHook != 0;
+	return g_Config.m_ClTvRainbow != 0 && g_Config.m_ClTvRainbowHook != 0;
 }

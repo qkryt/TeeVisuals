@@ -8,6 +8,7 @@ class CFreezeOffscreenHud : public CComponent
 {
 private:
 	void RenderFreezeIndicators();
+	void RenderLocalFreezeHud();
 	void RenderOffscreenRadar();
 
 public:

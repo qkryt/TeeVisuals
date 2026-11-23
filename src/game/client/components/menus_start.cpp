@@ -263,19 +263,19 @@ void CMenusStart::RenderStartMenu(CUIRect MainView)
 	char aBuf[128] = "";
 	if(UpdateState == IEClientUpdater::EState::AVAILABLE)
 	{
-		str_format(aBuf, sizeof(aBuf), Localize("E-Client %s is out!"), pEClientUpdater->LatestVersion());
+		str_format(aBuf, sizeof(aBuf), Localize("TeeVisuals %s is out!"), pEClientUpdater->LatestVersion());
 		static CButtonContainer s_EClientUpdate;
 		if(GameClient()->m_Menus.DoButton_Menu(&s_EClientUpdate, Localize("Update now"), 0, &UpdateButton, BUTTONFLAG_LEFT, nullptr, IGraphics::CORNER_ALL, 5.0f, 0.0f, ColorRGBA(0.0f, 0.0f, 0.0f, 0.25f)))
 			pEClientUpdater->Download();
 	}
 	else if(UpdateState == IEClientUpdater::EState::DOWNLOADING)
 	{
-		str_copy(aBuf, Localize("Downloading E-Client update…"));
+		str_copy(aBuf, Localize("Downloading TeeVisuals update…"));
 		Ui()->RenderProgressBar(UpdateButton, pEClientUpdater->Progress() / 100.0f);
 	}
 	else if(UpdateState == IEClientUpdater::EState::READY)
 	{
-		str_copy(aBuf, Localize("E-Client update ready!"));
+		str_copy(aBuf, Localize("TeeVisuals update ready!"));
 		static CButtonContainer s_EClientRestart;
 		if(GameClient()->m_Menus.DoButton_Menu(&s_EClientRestart, Localize("Restart"), 0, &UpdateButton, BUTTONFLAG_LEFT, nullptr, IGraphics::CORNER_ALL, 5.0f, 0.0f, ColorRGBA(0.0f, 0.0f, 0.0f, 0.25f)))
 			Client()->Restart();
@@ -323,7 +323,7 @@ void CMenusStart::RenderStartMenu(CUIRect MainView)
 		static CButtonContainer s_EClientDownload;
 		if(GameClient()->m_Menus.DoButton_Menu(&s_EClientDownload, Localize("Download"), 0, &VersionButton, BUTTONFLAG_ALL, nullptr, IGraphics::CORNER_ALL, 5, 0.5f, ColorRGBA(0.1f, 0.4f, 0.3f, 0.25f), 11.0f))
 		{
-			Client()->ViewLink(Localize("https://github.com/qxdFox/Entity-Client-DDNet/releases/latest"));
+			Client()->ViewLink(Localize("https://github.com/qkryt/TeeVisuals/releases/latest"));
 		}
 	}
 #endif

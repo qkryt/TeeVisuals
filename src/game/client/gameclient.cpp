@@ -215,7 +215,7 @@ void CGameClient::OnConsoleInit()
 						  &m_Motd, // for pressing esc to remove it
 						  &m_Spectator,
 						  &m_Bindwheel,
-						  &m_TeeVisuals.m_SmoothBindwheel,
+						  &m_TeeVisuals.m_Bindwheel,
 						  &m_PlayerActions,
 						  &m_SpecPauseRadio,
 						  &m_Emoticon,
@@ -416,7 +416,7 @@ void CGameClient::OnInit()
 	// update and swap after font loading, they are quite huge
 	Client()->UpdateAndSwap();
 
-	const char *pLoadingDDNetCaption = Localize("Loading E-Client");
+	const char *pLoadingDDNetCaption = Localize("Loading TeeVisuals");
 	const char *pLoadingMessageComponents = Localize("Initializing components");
 	const char *pLoadingMessageComponentsSpecial = Localize("Why are you slowmo replaying to read this?");
 	char aLoadingMessage[256];

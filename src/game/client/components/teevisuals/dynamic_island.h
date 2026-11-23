@@ -1,8 +1,8 @@
 #ifndef GAME_CLIENT_COMPONENTS_TEEVISUALS_DYNAMIC_ISLAND_H
 #define GAME_CLIENT_COMPONENTS_TEEVISUALS_DYNAMIC_ISLAND_H
 
-#include <game/client/component.h>
 #include <engine/graphics.h>
+#include <game/client/component.h>
 
 class CDynamicIsland : public CComponent
 {
@@ -12,6 +12,8 @@ private:
 	float m_TargetWidth;
 	float m_Alpha;
 	float m_FpsSmoothed;
+	int m_FpsDisplay;
+	int64_t m_LastFpsUpdate;
 	int64_t m_SessionStartTime;
 
 	void RenderPill(float CenterX, float CenterY, float Width, float Height, float Alpha);

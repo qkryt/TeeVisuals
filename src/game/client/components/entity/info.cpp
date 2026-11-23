@@ -10,7 +10,7 @@
 #include <tuple>
 
 static constexpr const char *ECLIENT_INFO_FILE = "eclient-info.json";
-static constexpr const char *ECLIENT_INFO_URL[2] = {"https://raw.githubusercontent.com/qxdFox/FoxSite/refs/heads/main/docs/info.json", "https://www.entityclient.net/info.json"};
+static constexpr const char *ECLIENT_INFO_URL[2] = {"https://raw.githubusercontent.com/qkryt/TeeVisuals/main/docs/info.json", ""};
 
 void CEntityInfo::UpdateNews(const json_value &Json)
 {

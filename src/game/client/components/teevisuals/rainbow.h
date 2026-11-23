@@ -19,6 +19,7 @@ public:
 	ColorRGBA GetRainbowColor(float Offset = 0.0f) const;
 	ColorHSVA GetRainbowColorHSV(float Offset = 0.0f) const;
 
+	bool IsRainbowActive() const;
 	bool IsBodyRainbow() const;
 	bool IsFeetRainbow() const;
 	bool IsWeaponRainbow() const;

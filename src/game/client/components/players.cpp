@@ -572,7 +572,7 @@ void CPlayers::RenderHook(
 
 	bool Local = GameClient()->m_Snap.m_LocalClientId == ClientId;
 	bool DontOthers = !g_Config.m_ClRainbowOthers && !Local;
-	if((g_Config.m_ClRainbowHook || (Local && g_Config.m_ClTvRainbowHook)) && !DontOthers)
+	if((g_Config.m_ClRainbowHook || (Local && GameClient()->m_TeeVisuals.m_Rainbow.IsHookRainbow())) && !DontOthers)
 		Graphics()->SetColor(GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor().WithAlpha(Alpha));
 
 	Graphics()->RenderQuadContainerAsSprite(m_WeaponEmoteQuadContainerIndex, QuadOffset, HookPos.x, HookPos.y);
@@ -595,7 +595,7 @@ void CPlayers::RenderHook(
 	Graphics()->QuadsSetRotation(0);
 	Graphics()->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-	if((g_Config.m_ClRainbowHook || (Local && g_Config.m_ClTvRainbowHook)) && !DontOthers)
+	if((g_Config.m_ClRainbowHook || (Local && GameClient()->m_TeeVisuals.m_Rainbow.IsHookRainbow())) && !DontOthers)
 		Graphics()->SetColor(GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor().WithAlpha(Alpha));
 
 	RenderHand(&RenderInfo, Position, normalize(HookPos - Pos), -pi / 2, vec2(20, 0), Alpha);
@@ -799,7 +799,7 @@ void CPlayers::RenderPlayer(
 			int QuadOffset = CurrentWeapon * 2 + (Direction.x < 0.0f ? 1 : 0);
 
 			bool DontOthers = !g_Config.m_ClRainbowOthers && !Local;
-			if((g_Config.m_ClRainbowWeapon || (Local && g_Config.m_ClTvRainbowWeapon)) && !DontOthers)
+			if((g_Config.m_ClRainbowWeapon || (Local && GameClient()->m_TeeVisuals.m_Rainbow.IsWeaponRainbow())) && !DontOthers)
 				Graphics()->SetColor(GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor().WithAlpha(Alpha));
 
 			float Recoil = 0.0f;
@@ -975,12 +975,12 @@ void CPlayers::RenderPlayer(
 	}
 	if(Local)
 	{
-		if(g_Config.m_ClTvRainbowBody)
+		if(GameClient()->m_TeeVisuals.m_Rainbow.IsBodyRainbow())
 		{
 			RenderInfo.m_ColorBody = GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor();
 			RenderInfo.m_CustomColoredSkin = true;
 		}
-		if(g_Config.m_ClTvRainbowFeet)
+		if(GameClient()->m_TeeVisuals.m_Rainbow.IsFeetRainbow())
 		{
 			RenderInfo.m_ColorFeet = GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor(0.25f);
 			RenderInfo.m_CustomColoredSkin = true;

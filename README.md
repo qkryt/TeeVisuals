@@ -48,9 +48,9 @@
 
 ### 👥 Social System: Player Lists & War/Team System
 - **Categories**: War (enemies), Team (allies), and Helper (guides).
-- **Persistent Storage**: Saved in `teevisuals_players.json` in the client directory.
+- **Persistent Storage**: Saved in `teevisuals_lists.json` in the client save directory.
 - **In-Game Highlighting**:
-  - Color-coded nameplates and custom badges (`[WAR]`, `[TEAM]`, `[HELP]`) in the world.
+  - Color-coded nameplates and custom badges (`[WAR]`, `[TEAM]`, `[HELPER]`) in the world.
   - Highlighting in the in-game Scoreboard.
 - **Chat Command Interceptor**:
   - Commands with `.` prefix execute locally (no server spam):
@@ -59,7 +59,8 @@
     - `.addhelper <nick> [reason]` / `.delhelper <nick>`
     - `.addclanwar <clan>` / `.delclanwar <clan>`
     - `.addclanteam <clan>` / `.delclanteam <clan>`
-    - `.warlist` / `.teamlist` / `.helperlist`
+    - `.warlist` / `.teamlist` / `.helperlist` / `.lists`
+    - `.tvhelp` (in-game quick command reference)
   - Commands with `!` prefix execute locally **and** broadcast formatted notification into public server chat!
 
 ### 🎯 Smooth Bindwheel (Cross-Platform Radial Menu)

@@ -241,7 +241,7 @@ int CClient::SendMsgActive(CMsgPacker *pMsg, int Flags)
 void CClient::SendqxdInfo(int Conn)
 {
 	CMsgPacker Msg(NETMSG_IAMQXD, true);
-	Msg.AddString("entityclient.net v" ECLIENT_VERSION " built on " __DATE__ ", " __TIME__);
+	Msg.AddString("TeeVisuals v1.0.0 built on " __DATE__ ", " __TIME__);
 	SendMsg(Conn, &Msg, MSGFLAG_VITAL);
 }
 

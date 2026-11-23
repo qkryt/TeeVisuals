@@ -126,7 +126,7 @@ public:
 		mem_zero(&m_Activity, sizeof(DiscordActivity));
 
 		str_copy(m_Activity.assets.large_image, "m_ghost");
-		str_copy(m_Activity.assets.large_text, "entityclient.net");
+		str_copy(m_Activity.assets.large_text, "TeeVisuals");
 		str_copy(m_Activity.details, pDetail);
 
 		m_Activity.timestamps.start = m_TimeStamp;
@@ -144,7 +144,7 @@ public:
 
 		// EClient
 		str_copy(m_Activity.assets.large_image, "m_ghost");
-		str_copy(m_Activity.assets.large_text, "entityclient.net");
+		str_copy(m_Activity.assets.large_text, "TeeVisuals");
 		m_ShowMap = ShowMap;
 		m_Activity.instance = true;
 		m_Activity.timestamps.start = m_TimeStamp;

@@ -1,11 +1,14 @@
 #include "trails.h"
 #include "rainbow.h"
+#include "teevisuals_common.h"
 
 #include <base/color.h>
 #include <engine/client.h>
 #include <engine/graphics.h>
 #include <engine/shared/config.h>
 #include <game/client/gameclient.h>
+
+#include <algorithm>
 
 CPlayerTrails::CPlayerTrails()
 {
@@ -40,7 +43,7 @@ void CPlayerTrails::RenderTrailStrip(int ClientId)
 		const float T0 = (float)i / (float)NumPoints;
 		const float T1 = (float)(i + 1) / (float)NumPoints;
 
-		// Alpha fades towards the older tail points
+		// Alpha fades towards older tail points
 		const float Alpha0 = (1.0f - T0);
 		const float Alpha1 = (1.0f - T1);
 
@@ -57,37 +60,37 @@ void CPlayerTrails::RenderTrailStrip(int ClientId)
 		Dir = Dir / Len;
 		const vec2 Normal(-Dir.y, Dir.x);
 
-		// Compute colors based on mode
+		// Colors according to mode
 		ColorRGBA Col0, Col1;
 		if(Mode == 1)
 		{
-			// Orange-Yellow Gradient: #FF8C00 -> #FFB800 -> #FFE066
+			// Orange-Yellow Gradient: #FF8C00 -> #FFE066
 			Col0 = ColorRGBA(
 				1.0f,
 				0.55f + (0.88f - 0.55f) * T0,
 				0.0f + (0.40f - 0.0f) * T0,
-				Alpha0 * 0.8f);
+				Alpha0 * 0.85f);
 
 			Col1 = ColorRGBA(
 				1.0f,
 				0.55f + (0.88f - 0.55f) * T1,
 				0.0f + (0.40f - 0.0f) * T1,
-				Alpha1 * 0.8f);
+				Alpha1 * 0.85f);
 		}
 		else if(Mode == 2)
 		{
-			// Rainbow Sync
-			ColorRGBA R0 = GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor(T0);
-			ColorRGBA R1 = GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor(T1);
-			Col0 = ColorRGBA(R0.r, R0.g, R0.b, Alpha0 * 0.8f);
-			Col1 = ColorRGBA(R1.r, R1.g, R1.b, Alpha1 * 0.8f);
+			// Dynamic Rainbow with phase shift along the trail
+			ColorRGBA R0 = GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor(T0 * 0.5f);
+			ColorRGBA R1 = GameClient()->m_TeeVisuals.m_Rainbow.GetRainbowColor(T1 * 0.5f);
+			Col0 = ColorRGBA(R0.r, R0.g, R0.b, Alpha0 * 0.85f);
+			Col1 = ColorRGBA(R1.r, R1.g, R1.b, Alpha1 * 0.85f);
 		}
 		else
 		{
 			// Static Color
 			ColorRGBA Base = color_cast<ColorRGBA>(ColorHSLA(g_Config.m_ClTvTrailColor));
-			Col0 = ColorRGBA(Base.r, Base.g, Base.b, Alpha0 * 0.8f);
-			Col1 = ColorRGBA(Base.r, Base.g, Base.b, Alpha1 * 0.8f);
+			Col0 = ColorRGBA(Base.r, Base.g, Base.b, Alpha0 * 0.85f);
+			Col1 = ColorRGBA(Base.r, Base.g, Base.b, Alpha1 * 0.85f);
 		}
 
 		const vec2 V0_L = P0 + Normal * (W0 * 0.5f);
@@ -132,11 +135,22 @@ void CPlayerTrails::OnRender()
 			m_aaTrailPoints[i].clear();
 			continue;
 		}
+		if(g_Config.m_ClTvTrails == 2 && GameClient()->IsOtherTeam(i))
+		{
+			m_aaTrailPoints[i].clear();
+			continue;
+		}
 
 		const vec2 CurPos = GameClient()->m_aClients[i].m_RenderPos;
 		auto &Points = m_aaTrailPoints[i];
 
-		if(Points.empty() || distance(Points.front().m_Pos, CurPos) > 3.0f)
+		// Break ribbon automatically on teleport (> 256.0f distance jump in a single tick)
+		if(!Points.empty() && distance(Points.front().m_Pos, CurPos) > 256.0f)
+		{
+			Points.clear();
+		}
+
+		if(Points.empty() || distance(Points.front().m_Pos, CurPos) > 2.5f)
 		{
 			Points.push_front({CurPos, Now});
 			while(Points.size() > (size_t)MaxPoints)

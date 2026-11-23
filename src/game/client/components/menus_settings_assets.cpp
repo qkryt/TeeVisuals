@@ -382,7 +382,7 @@ void CMenus::RenderSettingsAssets(CUIRect MainView)
 	User.m_pUser = this;
 	User.m_LoadedFunc = [&]() {
 		if(time_get_nanoseconds() - LoadStartTime > 500ms)
-			RenderLoading(Localize("Loading E-Client"), "Loading assets", 0);
+			RenderLoading(Localize("Loading TeeVisuals"), "Loading assets", 0);
 	};
 	if(s_CurCustomTab == ASSETS_TAB_ENTITIES)
 	{

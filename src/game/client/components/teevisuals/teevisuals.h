@@ -4,13 +4,14 @@
 #include <base/color.h>
 #include <game/client/component.h>
 
+#include "bindwheel.h"
 #include "dynamic_island.h"
 #include "freeze_offscreen.h"
+#include "mobile_ux.h"
 #include "player_lists.h"
 #include "rainbow.h"
-#include "smooth_bindwheel.h"
 #include "trails.h"
-#include "ui_customizer.h"
+#include "ui_custom.h"
 
 class CTeeVisuals : public CComponent
 {
@@ -20,8 +21,9 @@ public:
 	CPlayerTrails m_Trails;
 	CFreezeOffscreenHud m_FreezeOffscreen;
 	CPlayerLists m_PlayerLists;
-	CSmoothBindwheel m_SmoothBindwheel;
-	CUiCustomizer m_UiCustomizer;
+	CBindwheel m_Bindwheel;
+	CUiCustom m_UiCustom;
+	CMobileUx m_MobileUx;
 
 	CTeeVisuals();
 	int Sizeof() const override { return sizeof(*this); }

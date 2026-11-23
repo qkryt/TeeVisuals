@@ -51,7 +51,6 @@ void CMenus::RenderSettings(CUIRect MainView)
 		Localize("Sound"),
 		Localize("DDNet"),
 		Localize("Assets"),
-		("E-Client"),
 		("Profiles"),
 		("TeeVisuals")};
 
@@ -61,6 +60,13 @@ void CMenus::RenderSettings(CUIRect MainView)
 	{
 		TabBar.HSplitTop(10.0f, nullptr, &TabBar);
 		TabBar.HSplitTop(26.0f, &Button, &TabBar);
+
+		if(i == SETTINGS_TEEVISUALS && g_Config.m_UiSettingsPage == i)
+		{
+			// Accent orange-yellow highlight when TeeVisuals is selected
+			Button.Draw(ColorRGBA(1.0f, 0.55f, 0.0f, 0.85f), IGraphics::CORNER_R, 6.0f);
+		}
+
 		if(DoButton_MenuTab(&s_aTabButtons[i], apTabs[i], g_Config.m_UiSettingsPage == i, &Button, IGraphics::CORNER_R, &m_aAnimatorsSettingsTab[i]))
 			g_Config.m_UiSettingsPage = i;
 	}
@@ -117,11 +123,6 @@ void CMenus::RenderSettings(CUIRect MainView)
 	{
 		GameClient()->m_MenuBackground.ChangePosition(CMenuBackground::POS_SETTINGS_ASSETS);
 		RenderSettingsAssets(MainView);
-	}
-	else if(g_Config.m_UiSettingsPage == SETTINGS_ENTITY)
-	{
-		GameClient()->m_MenuBackground.ChangePosition(CMenuBackground::POS_SETTINGS_ENTITY);
-		RenderSettingsEntity(MainView);
 	}
 	else if(g_Config.m_UiSettingsPage == SETTINGS_SKINPROFILES)
 	{
